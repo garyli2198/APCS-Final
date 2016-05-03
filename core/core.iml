@@ -9,25 +9,25 @@
       <excludeFolder url="file://$MODULE_DIR$/.gradle"/>
     </content>
     <orderEntry type="sourceFolder" forTests="false"/>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Gary/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.2/e641cb91bec06bc64d9ddf7a7d7062caceec73cd/gdx-1.9.2.jar!/"/>
+          <root url="jar://C:/Users/stanl/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.2/ccf86a454b5ce7029c243da22f432f2edca0a34e/gdx-1.7.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Gary/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.2/b6c7422c6740f86a9a84fdcbc4c62a1f46db317d/gdx-1.9.2-sources.jar!/"/>
+          <root url="jar://C:/Users/stanl/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.7.2/5fc5db168836756dfabc1b73a4f5e81663dd4875/gdx-1.7.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/Gary/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.2/b78eaa90aaaf7830e6dffff587ea6e859c2787b2/gdx-box2d-1.9.2.jar!/"/>
+          <root url="jar://C:/Users/stanl/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.7.2/275914cb71c76e4d3ce1e4037cf8a9cce8f7c842/gdx-box2d-1.7.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/Gary/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.2/6e1c72c4a48cbde19f9584bfb8d2d09572067af4/gdx-box2d-1.9.2-sources.jar!/"/>
+          <root url="jar://C:/Users/stanl/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.7.2/895869a68d455e74ac0a7a0d6b3d4506bc08fd3b/gdx-box2d-1.7.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
