@@ -1,6 +1,7 @@
 package com.saaadd.game;
 
 import com.saaadd.character.Player;
+import com.saaadd.character.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class GameScreen implements Screen {
     public static float stateTime;
     private Player c;
+    private Character cuck;
     private SAAADD game;
     private SpriteBatch batch;
     public static OrthographicCamera cam;
@@ -30,8 +32,10 @@ public class GameScreen implements Screen {
         batch = new SpriteBatch();
         //
         //test character
-        c = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officer_torso_DW.png")));
+        c = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")));
         c.setLocation(cam.position.x, cam.position.y);
+        cuck = new Character(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")));
+        cuck.setLocation(0, 0);
     }
 
 
@@ -53,6 +57,7 @@ public class GameScreen implements Screen {
         map.draw(batch);
         batch.end();
         c.draw(batch);
+        cuck.draw(batch);
     }
 
     @Override

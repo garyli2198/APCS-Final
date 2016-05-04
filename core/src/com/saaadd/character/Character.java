@@ -1,5 +1,6 @@
 package com.saaadd.character;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,10 +11,10 @@ import com.saaadd.game.GameScreen;
 
 public class Character {
     public boolean isMoving;
-    private Sprite body, leg, idle;
+    private Sprite body, leg;
     private float angle;
     private Animation walkAnimation;
-    private TextureRegion[] walkFrames;
+    private TextureRegion[] walkFrames, bodyFrames;
     private float x, y, width = 64, height = 64;
     public final static float speed = 5.0f;
     /**
@@ -21,7 +22,8 @@ public class Character {
      * @param legSheet
      */
     public Character(Texture legSheet, Texture bodySheet) {
-        body = new Sprite(bodySheet);
+        bodyFrames = TextureRegion.split(bodySheet, 64, 64)[0];
+        body = new Sprite(bodyFrames[1]);
 
         walkFrames = TextureRegion.split(legSheet, 64, 64)[0];
         walkAnimation = new Animation(0.1f, walkFrames);
@@ -32,7 +34,8 @@ public class Character {
 
 
     public Character(Texture legSheet, Texture bodySheet, float x, float y, float angle) {
-        body = new Sprite(bodySheet);
+        bodyFrames = TextureRegion.split(bodySheet, 64, 64)[0];
+        body = new Sprite(bodyFrames[0]);
         leg = new Sprite(legSheet);
 
         walkFrames = TextureRegion.split(legSheet, 64, 64)[0];
@@ -47,6 +50,7 @@ public class Character {
     }
 
     public void draw(SpriteBatch batch) {
+        Sprite pistol = new Sprite(new Texture(Gdx.files.internal("weapons/1h_smg.png")));
         batch.begin();
         if(isMoving){
             leg =  new Sprite(walkAnimation.getKeyFrame(GameScreen.stateTime, true));
@@ -57,12 +61,23 @@ public class Character {
         }
         leg.setSize(width, height);
         body.setSize(width, height);
+        pistol.setSize(width, height);
         leg.setRotation(angle);
         body.setRotation(angle);
+
         leg.setCenter(x, y);
         body.setCenter(x, y);
+
+        //gun position calculations
+        float r = (float) Math.sqrt( 5 * 5 + 30 * 30);
+        float theta = (float) Math.atan2(30, 5);
+        pistol.setCenter((float) (x + r * Math.cos(theta + Math.toRadians(body.getRotation()))),
+                (float) (y + r * Math.sin(theta + Math.toRadians(body.getRotation()))));
+        pistol.setRotation(angle);
+
         leg.draw(batch);
         body.draw(batch);
+        pistol.draw(batch);
         batch.end();
 
     }
@@ -96,5 +111,7 @@ public class Character {
         width = sizex;
         height = sizey;
     }
+
+
 
 }
