@@ -1,5 +1,6 @@
 package com.saaadd.character;
 
+import com.badlogic.gdx.Game;
 import com.saaadd.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -25,16 +26,16 @@ public class Player extends Character implements InputProcessor {
         this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
         if (isMoving) {
             if (direction[back]) {
-                GameScreen.cam.translate(-movementVector.x, -movementVector.y);
+                GameScreen.cam.translate(0,-5);
             }
             if(direction[right]){
-                GameScreen.cam.translate(movementVector.y, -movementVector.x);
+                GameScreen.cam.translate(5,0);
             }
             if(direction[left]){
-                GameScreen.cam.translate(-movementVector.y, movementVector.x);
+                GameScreen.cam.translate(-5,0);
             }
             if(direction[front]) {
-                GameScreen.cam.translate(movementVector.x, movementVector.y);
+                GameScreen.cam.translate(0,5);
             }
 
         }
