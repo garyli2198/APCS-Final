@@ -1,12 +1,12 @@
 package com.saaadd.character;
 
-import com.badlogic.gdx.Game;
 import com.saaadd.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.saaadd.item.Weapon;
 
 public class Player extends Character implements InputProcessor {
     private Vector2 movementVector;
@@ -20,22 +20,36 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
     }
+    public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle){
+        super(legSheet, bodySheet, x, y, angle);
+        Gdx.input.setInputProcessor(this);
+        movementVector = new Vector2();
+        direction = new boolean[4];
+        pMoving = 0;
+    }
+    public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, Weapon weapon){
+        super(legSheet, bodySheet, x, y, angle, weapon);
+        Gdx.input.setInputProcessor(this);
+        movementVector = new Vector2();
+        direction = new boolean[4];
+        pMoving = 0;
+    }
 
     public void update() {
         this.isMoving = pMoving > 0;
         this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
         if (isMoving) {
             if (direction[back]) {
-                GameScreen.cam.translate(0,-5);
+                GameScreen.cam.translate(-movementVector.x, -movementVector.y);
             }
             if(direction[right]){
-                GameScreen.cam.translate(5,0);
+                GameScreen.cam.translate(movementVector.y, -movementVector.x);
             }
             if(direction[left]){
-                GameScreen.cam.translate(-5,0);
+                GameScreen.cam.translate(-movementVector.y, movementVector.x);
             }
             if(direction[front]) {
-                GameScreen.cam.translate(0,5);
+                GameScreen.cam.translate(movementVector.x, movementVector.y);
             }
 
         }
@@ -96,8 +110,8 @@ public class Player extends Character implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
+        this.getWeapon().fire();
+        return true;
     }
 
     @Override

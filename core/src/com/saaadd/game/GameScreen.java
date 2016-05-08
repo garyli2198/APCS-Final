@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
+import com.saaadd.item.Weapon;
 
 public class GameScreen extends ApplicationAdapter implements Screen {
     public static float stateTime;
@@ -24,21 +25,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static OrthographicCamera cam;
     public static Sprite map;
     public GameScreen(final SAAADD game){
-
-
-        //
+        //camera initialization
         cam = new OrthographicCamera(800, 800 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.update();
+        //tiledMap initialization
         tile = new TmxMapLoader().load("SAAADD TEST.tmx");
         rend = new OrthogonalTiledMapRenderer(tile);
+        //gameScreen initilization
         this.game = game;
         stateTime = 0f;
         batch = new SpriteBatch();
-        //
-        //test character
-        c = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")));
-        c.setLocation(cam.position.x, cam.position.y);
+        //test characters
+        Weapon w = new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH);
+        c = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
+                cam.position.x, cam.position.y,0, w);
         cuck = new Character(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")));
         cuck.setLocation(0, 0);
     }
@@ -51,13 +52,15 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void render(float delta) {
-        c.update();
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        stateTime += Gdx.graphics.getDeltaTime();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        c.update();
+
         cam.update();
         batch.setProjectionMatrix(cam.combined);
 
-        stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
         rend.setView(cam);
         rend.render();
