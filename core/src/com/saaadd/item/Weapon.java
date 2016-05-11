@@ -3,11 +3,13 @@ package com.saaadd.item;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.saaadd.game.GameScreen;
 
@@ -23,7 +25,7 @@ public class Weapon extends Item {
     private float centerx;
     private float centery;
     private float firex, firey, fireRotation;
-
+    private Sound bulletFire = Gdx.audio.newSound(Gdx.files.internal("bulletsound.mp3"));
     public Weapon(int id, String name, Texture image, int weaponType) {
         super(id, name, image);
         type = weaponType;
@@ -70,6 +72,8 @@ public class Weapon extends Item {
 
     public void fire(){
         firing = true;
+        bulletFire.play();
+        GameScreen.bullets.add(new Bullet(this));
 
     }
 
@@ -87,6 +91,13 @@ public class Weapon extends Item {
         firey = y;
     }
 
-
+    public float getFireX()
+    {
+        return firex;
+    }
+    public float getFireY()
+    {
+        return firey;
+    }
 
 }

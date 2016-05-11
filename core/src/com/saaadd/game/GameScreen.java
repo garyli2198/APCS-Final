@@ -1,6 +1,7 @@
 package com.saaadd.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.saaadd.character.Player;
 import com.saaadd.character.Character;
@@ -12,7 +13,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
+import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
+
+import java.util.ArrayList;
 
 public class GameScreen extends ApplicationAdapter implements Screen {
     public static float stateTime;
@@ -22,9 +26,14 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private SpriteBatch batch;
     private TiledMapRenderer rend;
     private TiledMap tile;
+    private ShapeRenderer shapeRend;
+    public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     public static OrthographicCamera cam;
     public static Sprite map;
+
     public GameScreen(final SAAADD game){
+        //shaperenderer initialization
+        shapeRend = new ShapeRenderer();
         //camera initialization
         cam = new OrthographicCamera(800, 800 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
@@ -60,13 +69,23 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         cam.update();
         batch.setProjectionMatrix(cam.combined);
-
+        shapeRend.setProjectionMatrix(cam.combined);
         batch.begin();
         rend.setView(cam);
         rend.render();
         batch.end();
         c.draw(batch);
         cuck.draw(batch);
+        for(int i =0; i<bullets.size();i++) {
+            Bullet s = bullets.get(i);
+            if(s.shouldRemove()) {
+                bullets.remove(i);
+            }
+            else {
+                s.draw(shapeRend);
+                s.update(Gdx.graphics.getDeltaTime());
+            }
+        }
     }
 
     @Override

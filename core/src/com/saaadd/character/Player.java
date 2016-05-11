@@ -12,6 +12,7 @@ public class Player extends Character implements InputProcessor {
     private Vector2 movementVector;
     private int pMoving;
     private boolean[] direction;
+
     public final static int front = 0, left = 1, back = 2, right = 3;
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
