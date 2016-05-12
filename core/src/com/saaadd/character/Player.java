@@ -1,5 +1,8 @@
 package com.saaadd.character;
 
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.saaadd.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -12,7 +15,7 @@ public class Player extends Character implements InputProcessor {
     private Vector2 movementVector;
     private int pMoving;
     private boolean[] direction;
-
+    private boolean[] overlapX;
     public final static int front = 0, left = 1, back = 2, right = 3;
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
@@ -20,6 +23,7 @@ public class Player extends Character implements InputProcessor {
         movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
+        overlapX = new boolean[GameScreen.mapObjects.getCount()];
     }
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle){
         super(legSheet, bodySheet, x, y, angle);
@@ -27,6 +31,8 @@ public class Player extends Character implements InputProcessor {
         movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
+        overlapX = new boolean[GameScreen.mapObjects.getCount()];
+
     }
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, Weapon weapon){
         super(legSheet, bodySheet, x, y, angle, weapon);
@@ -34,10 +40,39 @@ public class Player extends Character implements InputProcessor {
         movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
+        overlapX = new boolean[GameScreen.mapObjects.getCount()];
+
     }
 
     public void update() {
         this.isMoving = pMoving > 0;
+        boolean[] d = direction;
+        int count = 0;
+        for(RectangleMapObject r : GameScreen.mapObjects.getByType(RectangleMapObject.class)){
+            Rectangle rect = r.getRectangle();
+            if(Intersector.overlaps(rect, getRectangle() )){
+                if(overlapX[count]){
+                    if(getY() > rect.getY()){
+                        GameScreen.cam.position.y = rect.getY() + rect.getHeight() + getRectangle().getHeight()/2f + 1;
+                    }
+                    else if(getY() < rect.getY()){
+                        GameScreen.cam.position.y = rect.getY() - getRectangle().getHeight()/2f - 1;
+                    }
+                }
+                else{
+                    if(getX() > rect.getX()){
+                        GameScreen.cam.position.x = rect.getX() + rect.getWidth() + getRectangle().getWidth()/2f + 1;
+                    }
+                    else if(getX() < rect.getX()){
+                        GameScreen.cam.position.x = rect.getX() - getRectangle().getWidth()/2f - 1;
+                    }
+                }
+            }
+            overlapX[count] = getRectangle().getX() > rect.getX() - getRectangle().getWidth() &&
+                    getRectangle().getX() < rect.getX() + rect.getWidth();
+            count++;
+
+        }
         this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
         if (isMoving) {
             if (direction[back]) {

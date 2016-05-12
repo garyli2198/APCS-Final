@@ -2,6 +2,7 @@ package com.saaadd.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.saaadd.character.Player;
 import com.saaadd.character.Character;
@@ -28,8 +29,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private TiledMap tile;
     private ShapeRenderer shapeRend;
     public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    public static MapObjects mapObjects;
     public static OrthographicCamera cam;
-    public static Sprite map;
 
     public GameScreen(final SAAADD game){
         //shaperenderer initialization
@@ -41,6 +42,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //tiledMap initialization
         tile = new TmxMapLoader().load("SAAADD TEST.tmx");
         rend = new OrthogonalTiledMapRenderer(tile);
+        mapObjects = tile.getLayers().get("Object Layer 1").getObjects();
         //gameScreen initilization
         this.game = game;
         stateTime = 0f;

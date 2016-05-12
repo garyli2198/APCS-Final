@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.saaadd.game.GameScreen;
 import com.saaadd.item.Weapon;
@@ -114,6 +115,11 @@ public class Character {
         }
 
 
+    }
+    public Rectangle getRectangle(){
+        float x = getX() - body.getWidth() * 0.375f;
+        float y = getY() - body.getHeight() * 0.375f;
+        return new Rectangle(x, y, body.getWidth() * 0.75f, body.getHeight() * 0.75f);
     }
 
     public void translate(float dx, float dy) {
