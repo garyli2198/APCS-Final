@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
+import static com.saaadd.game.GameScreen.introCounter;
+
 public class Player extends Character implements InputProcessor {
     private Vector2 movementVector;
     private int pMoving;
@@ -130,7 +132,13 @@ public class Player extends Character implements InputProcessor {
             pMoving++;
             direction[right] = true;
         }
-
+        else if (keycode == Keys.N)
+        {
+            introCounter++;
+        }
+        else if (keycode == Keys.ESCAPE){
+            Gdx.app.exit();
+        }
         return true;
     }
 

@@ -1,6 +1,8 @@
 package com.saaadd.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.audio.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -18,8 +20,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
+import com.saaadd.game.Text;
 
+import java.awt.*;
 import java.util.ArrayList;
+
 
 public class GameScreen extends ApplicationAdapter implements Screen {
     public static float stateTime;
@@ -33,13 +38,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static MapObjects mapObjects;
     public static OrthographicCamera cam;
     private CharacterRenderer characterRenderer;
+    private BitmapFont font;
+    private Text text;
+    public static int introCounter  = 0;
 
     public GameScreen(final SAAADD game){
+        Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
+        backgroundMusic.play();
         //shaperenderer initialization
         shapeRend = new ShapeRenderer();
-
         //camera initialization
-        cam = new OrthographicCamera(800, 800 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
+        cam = new OrthographicCamera(1200, 1200 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.update();
 
@@ -48,6 +57,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         rend = new OrthogonalTiledMapRenderer(tile);
         mapObjects = tile.getLayers().get("Object Layer 1").getObjects();
 
+        //font initialization
+        font = new BitmapFont(Gdx.files.internal("vidgamefont.fnt"));
+        text = new Text();
         //gameScreen initilization
         this.game = game;
         stateTime = 0f;
@@ -77,7 +89,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //update statetime
         stateTime += Gdx.graphics.getDeltaTime();
         //update color background
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor((float)(24/255.0), (float)(105/255.0), (float)(4/255.0), 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //update camera
         cam.update();
@@ -88,6 +100,19 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         rend.render();
         //render characters
         characterRenderer.renderCharacters(batch);
+        //game intro text
+        batch.begin();
+        if(introCounter == 0){
+            font.draw(batch,text.getGameIntro(),player.getX(),player.getY()+300,10,5,true);
+        }
+        else if(introCounter == 1){
+            font.draw(batch,text.getGameIntro2(),player.getX(),player.getY()+300,10,5,true);
+        }
+        else if(introCounter == 2)
+        {
+            font.draw(batch,text.getGameIntro3(),player.getX(),player.getY()+300,10,5,true);
+        }
+        batch.end();
         //render bullets
         for(int i =0; i<bullets.size();i++) {
             Bullet s = bullets.get(i);
@@ -99,6 +124,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 s.update(Gdx.graphics.getDeltaTime());
             }
         }
+
     }
 
     @Override
