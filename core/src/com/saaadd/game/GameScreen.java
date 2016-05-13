@@ -44,7 +44,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     public GameScreen(final SAAADD game){
         Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
-        backgroundMusic.play();
+        backgroundMusic.loop();
         //shaperenderer initialization
         shapeRend = new ShapeRenderer();
         //camera initialization
