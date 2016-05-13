@@ -3,12 +3,14 @@ package com.saaadd.character;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.saaadd.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
 public class Player extends Character implements InputProcessor {
@@ -17,6 +19,7 @@ public class Player extends Character implements InputProcessor {
     private boolean[] direction;
     private boolean[] overlapX;
     public final static int front = 0, left = 1, back = 2, right = 3;
+
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
         Gdx.input.setInputProcessor(this);
@@ -34,8 +37,8 @@ public class Player extends Character implements InputProcessor {
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
 
     }
-    public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, Weapon weapon){
-        super(legSheet, bodySheet, x, y, angle, weapon);
+    public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon){
+        super(legSheet, bodySheet, x, y, angle, health, weapon);
         Gdx.input.setInputProcessor(this);
         movementVector = new Vector2();
         direction = new boolean[4];
@@ -44,6 +47,12 @@ public class Player extends Character implements InputProcessor {
 
     }
 
+    @Override
+    public boolean shouldRemove() {
+        return getHealth() <= 0;
+    }
+
+    @Override
     public void update() {
         this.isMoving = pMoving > 0;
         boolean[] d = direction;
@@ -53,18 +62,18 @@ public class Player extends Character implements InputProcessor {
             if(Intersector.overlaps(rect, getRectangle() )){
                 if(overlapX[count]){
                     if(getY() > rect.getY()){
-                        GameScreen.cam.position.y = rect.getY() + rect.getHeight() + getRectangle().getHeight()/2f + 1;
+                        setY(rect.getY() + rect.getHeight() + getRectangle().getHeight()/2f + 1);
                     }
                     else if(getY() < rect.getY()){
-                        GameScreen.cam.position.y = rect.getY() - getRectangle().getHeight()/2f - 1;
+                        setY(rect.getY() - getRectangle().getHeight()/2f - 1);
                     }
                 }
                 else{
                     if(getX() > rect.getX()){
-                        GameScreen.cam.position.x = rect.getX() + rect.getWidth() + getRectangle().getWidth()/2f + 1;
+                        setX(rect.getX() + rect.getWidth() + getRectangle().getWidth()/2f + 1);
                     }
                     else if(getX() < rect.getX()){
-                        GameScreen.cam.position.x = rect.getX() - getRectangle().getWidth()/2f - 1;
+                        setX(rect.getX() - getRectangle().getWidth()/2f - 1);
                     }
                 }
             }
@@ -73,22 +82,30 @@ public class Player extends Character implements InputProcessor {
             count++;
 
         }
-        this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
+        //this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
+        GameScreen.cam.position.x = getX();
+        GameScreen.cam.position.y = getY();
         if (isMoving) {
             if (direction[back]) {
-                GameScreen.cam.translate(0,-5);
+                translate(0,-5);
             }
             if(direction[right]){
-                GameScreen.cam.translate(5,0);
+                translate(5,0);
             }
             if(direction[left]){
-                GameScreen.cam.translate(-5,0);
+                translate(-5,0);
             }
             if(direction[front]) {
-                GameScreen.cam.translate(0,5);
+                translate(0,5);
             }
 
         }
+    }
+
+    @Override
+    public void onHit(Bullet bullet) {
+        this.addHealth( -1 * bullet.getWeapon().getDamage());
+
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

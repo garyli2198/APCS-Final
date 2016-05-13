@@ -24,16 +24,20 @@ public class Weapon extends Item {
     private float firingTime;
     private float centerx;
     private float centery;
-    private float firex, firey, fireRotation;
+    private float firex, firey;
+    private float fireRate;
+    private int damage;
     private Sound bulletFire = Gdx.audio.newSound(Gdx.files.internal("bulletsound.mp3"));
-    public Weapon(int id, String name, Texture image, int weaponType) {
+    public Weapon(int id, String name, Texture image, int weaponType, float fireRate, int damage) {
         super(id, name, image);
         type = weaponType;
         weaponSprite = new Sprite(image);
         TextureRegion[] fireFrames = TextureRegion.split(new Texture(Gdx.files.internal("weapons/gunfire.png")), 61, 61)[0];
-        gunfire = new Animation(0.05f, fireFrames);
+        gunfire = new Animation(fireRate/6f, fireFrames);
         firing = false;
         firingTime = 0;
+        this.fireRate = fireRate;
+        this.damage = damage;
     }
     public int getType(){
         return type;
@@ -44,7 +48,9 @@ public class Weapon extends Item {
     public void setWeaponSprite(Sprite sprite){
         this.weaponSprite = sprite;
     }
-
+    public int getDamage(){
+        return damage;
+    }
 
     public void draw(SpriteBatch batch){
         float angle = weaponSprite.getRotation();
@@ -52,7 +58,7 @@ public class Weapon extends Item {
             firingTime += Gdx.graphics.getDeltaTime();
             Sprite fire = new Sprite(gunfire.getKeyFrame(firingTime, false));
             fire.setSize(64, 64);
-            if(firingTime > 0.3){
+            if(firingTime > fireRate){
                 firing = false;
                 firingTime = 0;
             }
@@ -71,9 +77,11 @@ public class Weapon extends Item {
     }
 
     public void fire(){
-        firing = true;
-        bulletFire.play();
-        GameScreen.bullets.add(new Bullet(this));
+        if(!firing) {
+            firing = true;
+            bulletFire.play();
+            GameScreen.bullets.add(new Bullet(this));
+        }
 
     }
 
