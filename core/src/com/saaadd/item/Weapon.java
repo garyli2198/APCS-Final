@@ -79,7 +79,7 @@ public class Weapon extends Item {
     public void fire(){
         if(!firing) {
             firing = true;
-            bulletFire.play();
+            bulletFire.play(1);
             GameScreen.bullets.add(new Bullet(this));
         }
 

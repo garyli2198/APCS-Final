@@ -43,10 +43,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static int introCounter  = 0;
 
     public GameScreen(final SAAADD game){
+        //play background music
         Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
         backgroundMusic.loop();
+
         //shaperenderer initialization
         shapeRend = new ShapeRenderer();
+
         //camera initialization
         cam = new OrthographicCamera(1200, 1200 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
@@ -60,6 +63,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //font initialization
         font = new BitmapFont(Gdx.files.internal("vidgamefont.fnt"));
         text = new Text();
+
         //gameScreen initilization
         this.game = game;
         stateTime = 0f;

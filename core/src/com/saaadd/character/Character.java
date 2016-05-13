@@ -209,6 +209,8 @@ public abstract class Character {
         this.angle = angle;
     }
 
+    public float getRotation() {return angle;}
+
     public float getX() {
         return x;
     }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="109">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="110">
  <tileset firstgid="1" name="primary" tilewidth="32" tileheight="32" tilecount="900" columns="30">
   <image source="tile art.png" width="960" height="960"/>
  </tileset>
@@ -180,6 +180,7 @@
   <object id="106" x="2896" y="50.6667" width="49.3333" height="110.667"/>
   <object id="107" x="2946.67" y="64" width="141.333" height="58.6667"/>
   <object id="108" x="3044" y="108" width="42.6667" height="49.3333"/>
+  <object id="109" x="1034" y="2952" width="78" height="79"/>
  </objectgroup>
  <layer name="trees and stuff" width="100" height="100">
   <data encoding="csv">
