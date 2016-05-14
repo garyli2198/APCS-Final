@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.utils.Timer;
 import com.saaadd.character.CharacterRenderer;
 import com.saaadd.character.Enemy;
 import com.saaadd.character.Player;
@@ -40,19 +41,21 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private CharacterRenderer characterRenderer;
     private BitmapFont font;
     private Text text;
-    public static int introCounter  = 0;
+    private WaveMatch match;
+    private Sound backgroundMusic;
+    public static int introCounter = 0;
     private ArrayList<String> gameText = new ArrayList<String>();
 
-    public GameScreen(final SAAADD game){
-        //play background music
-        Sound backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
+    public GameScreen(final SAAADD game) {
+        //init and play background music
+        backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
         backgroundMusic.loop();
 
         //shaperenderer initialization
         shapeRend = new ShapeRenderer();
 
         //camera initialization
-        cam = new OrthographicCamera(1200, 1200 * ((float)Gdx.graphics.getHeight()/(float)Gdx.graphics.getWidth()));
+        cam = new OrthographicCamera(1200, 1200 * ((float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth()));
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.update();
 
@@ -73,19 +76,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //test characters
         Weapon w = new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10);
-        Weapon w1 = new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10);
         player = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
-                cam.position.x, cam.position.y,0,100, w);
-        Enemy enemy = new Enemy(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
-                50, 50, 0, 100, w1);
+                cam.position.x, cam.position.y, 0, 100, w);
+
 
         //Character Renderer initialization
         characterRenderer = new CharacterRenderer();
         characterRenderer.add(player);
 
+        //Wave system init
+        match = new WaveMatch();
 
-    }
-
+        }
 
 
     @Override
@@ -97,39 +99,45 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //update statetime
         stateTime += Gdx.graphics.getDeltaTime();
         //update color background
-        Gdx.gl.glClearColor((float)(24/255.0), (float)(105/255.0), (float)(4/255.0), 1);
+        Gdx.gl.glClearColor((float) (24 / 255.0), (float) (105 / 255.0), (float) (4 / 255.0), 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //update camera
         cam.update();
-        //update chape render and batch
+        //update shape render and batch
         batch.setProjectionMatrix(cam.combined);
         shapeRend.setProjectionMatrix(cam.combined);
         rend.setView(cam);
         rend.render();
         //render characters
         characterRenderer.renderCharacters(batch);
+        match.renderCharacters(batch);
         //game intro text
+
         batch.begin();
-        if(introCounter == 0){
-            font.draw(batch,gameText.get(0),player.getX(),player.getY()+300,10,5,true);
-        }
-        else if(introCounter == 1){
-            font.draw(batch,gameText.get(1),player.getX(),player.getY()+300,10,5,true);
-        }
-        else if(introCounter == 2) {
+        if (introCounter == 0) {
+            font.draw(batch, gameText.get(0), player.getX(), player.getY() + 300, 10, 5, true);
+        } else if (introCounter == 1) {
+            font.draw(batch, gameText.get(1), player.getX(), player.getY() + 300, 10, 5, true);
+        } else if (introCounter == 2) {
             font.draw(batch, gameText.get(2), player.getX(), player.getY() + 300, 10, 5, true);
+        } else {
+            font.draw(batch, "ROUND: " + String.valueOf(match.getRound()), player.getX() - Gdx.graphics.getWidth() / 3.5f,
+                    player.getY() + Gdx.graphics.getHeight() / 3.5f);
+            font.draw(batch, "MONEY: " + String.valueOf(match.getMoney()), player.getX() - Gdx.graphics.getWidth() / 3.5f,
+                    player.getY() + Gdx.graphics.getHeight() / 4);
+            if(match.getCharacterListSize()==0) {
+                font.draw(batch, "PRESS N TO START NEXT ROUND", player.getX(), player.getY() + 300, 10, 5, true);
+            }
+            match.start();
+            match.money();
         }
         batch.end();
-        if(characterRenderer.getCharacterListSize()<5 && introCounter >=3) {
-            characterRenderer.spawnEnemy();
-        }
         //render bullets
-        for(int i =0; i<bullets.size();i++) {
+        for (int i = 0; i < bullets.size(); i++) {
             Bullet s = bullets.get(i);
-            if(s.shouldRemove()) {
+            if (s.shouldRemove()) {
                 bullets.remove(i);
-            }
-            else {
+            } else {
                 s.draw(shapeRend);
                 s.update(Gdx.graphics.getDeltaTime());
             }

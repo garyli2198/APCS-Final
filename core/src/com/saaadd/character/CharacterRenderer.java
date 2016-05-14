@@ -38,8 +38,23 @@ public class CharacterRenderer {
     }
 
     public void spawnEnemy() {
+        //never spawns outside border
+        float x = (float) (player.getX() + 500 + Math.random() * 500);
+        while (x < 40) {
+            x++;
+        }
+        while (x > 3150) {
+            x--;
+        }
+        float y = (float) (player.getY() + 500 + Math.random() * 500);
+        while (y < 40) {
+            y++;
+        }
+        while (y > 3140) {
+            y--;
+        }
         characterList.add(new Enemy(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
-                (float) (player.getX() + Math.random() * 500), (float) (player.getY() + Math.random() * 500), 0, 100, new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
+                x, y, 0, 100, new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
     }
 
     public void add(Character character) {
@@ -50,5 +65,12 @@ public class CharacterRenderer {
         characterList.remove(character);
     }
 
-    public int getCharacterListSize() { return  characterList.size(); }
+    public List<Character> getCharacterList()
+    {
+        return characterList;
+    }
+
+    public int getCharacterListSize() {
+        return characterList.size();
+    }
 }

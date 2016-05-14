@@ -10,10 +10,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.saaadd.game.GameScreen;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
+
 import java.util.Random;
+
 import static com.saaadd.game.GameScreen.player;
 
-    /**
+/**
  * Created by stanl on 5/11/2016.
  */
 public class Enemy extends Character {
@@ -22,7 +24,6 @@ public class Enemy extends Character {
     private Sound deathSound = Gdx.audio.newSound(Gdx.files.internal("deathsound.mp3"));
     private float prevX = 0, prevY = 0;
     private boolean[] overlapX;
-    private Random rand = new Random();
 
     public Enemy(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon) {
         super(legSheet, bodySheet, x, y, angle, health, weapon);
@@ -60,8 +61,8 @@ public class Enemy extends Character {
             count++;
 
         }
-
         float radians = (float) Math.atan((player.getY() - getY()) / (player.getX() - getX()));
+
         if (player.getX() - getX() < 0) {
             radians += 3.14159;
         }
@@ -75,12 +76,10 @@ public class Enemy extends Character {
             prevX = getX();
             prevY = getY();
             setRotation((float) Math.toDegrees(rotate) - 90);
-            translate((float) (Math.cos(radians ) * speed * .8), (float) (Math.sin(radians) * speed * .8));
-        }
-        else {
+            translate((float) (Math.cos(radians) * speed * .8), (float) (Math.sin(radians) * speed * .8));
+        } else {
             isMoving = false;
         }
-
     }
 
     @Override

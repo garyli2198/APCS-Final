@@ -54,7 +54,8 @@ public class MainMenuScreen implements Screen {
             Gdx.app.exit();
         }
         batch.begin();
-        font.draw(batch, "CLICK TO START \nPRESS ESC TO EXIT", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 10, 5, true);
+        font.draw(batch, "CLICK TO START \nPRESS ESC TO EXIT", Gdx.graphics.getWidth() / 2,
+                Gdx.graphics.getHeight() / 2, 10, 5, true);
         batch.end();
 
         if(isLoading) {
