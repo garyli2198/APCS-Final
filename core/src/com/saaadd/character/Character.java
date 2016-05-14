@@ -169,12 +169,12 @@ public abstract class Character {
                     y + (float) (rf * Math.sin(thetaf + Math.toRadians(body.getRotation() + 5))));
             weapon.draw(batch); //draw gun
         }
-        if(bleeding){
+        if (bleeding) {
             Sprite blood = new Sprite(bloodAnimation.getKeyFrame(bleedingTime, false));
             blood.setSize(64, 64);
             blood.setCenter(x, y);
 
-            if(bleedingTime > 0.3f){
+            if (bleedingTime > 0.3f) {
                 bleeding = false;
             }
             batch.begin();
@@ -209,13 +209,15 @@ public abstract class Character {
         this.angle = angle;
     }
 
-    public float getRotation() {return angle;}
+    public float getRotation() {
+        return angle;
+    }
 
     public float getX() {
         return x;
     }
 
-    public void setX( float x ) {
+    public void setX(float x) {
         this.x = x;
     }
 
@@ -223,7 +225,7 @@ public abstract class Character {
         return y;
     }
 
-    public void setY( float y ){
+    public void setY(float y) {
         this.y = y;
     }
 

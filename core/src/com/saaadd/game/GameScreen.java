@@ -41,6 +41,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private BitmapFont font;
     private Text text;
     public static int introCounter  = 0;
+    private ArrayList<String> gameText = new ArrayList<String>();
 
     public GameScreen(final SAAADD game){
         //play background music
@@ -63,6 +64,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //font initialization
         font = new BitmapFont(Gdx.files.internal("vidgamefont.fnt"));
         text = new Text();
+        text.addText(gameText);
 
         //gameScreen initilization
         this.game = game;
@@ -76,10 +78,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 cam.position.x, cam.position.y,0,100, w);
         Enemy enemy = new Enemy(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
                 50, 50, 0, 100, w1);
+
         //Character Renderer initialization
         characterRenderer = new CharacterRenderer();
         characterRenderer.add(player);
-        characterRenderer.add(enemy);
+
+
     }
 
 
@@ -107,16 +111,18 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         //game intro text
         batch.begin();
         if(introCounter == 0){
-            font.draw(batch,text.getGameIntro(),player.getX(),player.getY()+300,10,5,true);
+            font.draw(batch,gameText.get(0),player.getX(),player.getY()+300,10,5,true);
         }
         else if(introCounter == 1){
-            font.draw(batch,text.getGameIntro2(),player.getX(),player.getY()+300,10,5,true);
+            font.draw(batch,gameText.get(1),player.getX(),player.getY()+300,10,5,true);
         }
-        else if(introCounter == 2)
-        {
-            font.draw(batch,text.getGameIntro3(),player.getX(),player.getY()+300,10,5,true);
+        else if(introCounter == 2) {
+            font.draw(batch, gameText.get(2), player.getX(), player.getY() + 300, 10, 5, true);
         }
         batch.end();
+        if(characterRenderer.getCharacterListSize()<5 && introCounter >=3) {
+            characterRenderer.spawnEnemy();
+        }
         //render bullets
         for(int i =0; i<bullets.size();i++) {
             Bullet s = bullets.get(i);

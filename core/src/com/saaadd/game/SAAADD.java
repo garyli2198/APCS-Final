@@ -6,7 +6,7 @@ import com.badlogic.gdx.Game;
 public class SAAADD extends Game {
 	@Override
 	public void create () {
-		this.setScreen(new GameScreen(this));
+		this.setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
