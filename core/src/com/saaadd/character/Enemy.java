@@ -20,6 +20,9 @@ import static com.saaadd.game.GameScreen.player;
  */
 public class Enemy extends Character {
 
+    public final static Texture enemyLegs = new Texture(Gdx.files.internal("enemyLegs.png"));
+    public final static Texture enemyBody = new Texture(Gdx.files.internal("enemyBody.png"));
+
     private Sound onHitSound = Gdx.audio.newSound(Gdx.files.internal("onhitsound.mp3"));
     private Sound deathSound = Gdx.audio.newSound(Gdx.files.internal("deathsound.mp3"));
     private float prevX = 0, prevY = 0;

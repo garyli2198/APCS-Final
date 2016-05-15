@@ -1,9 +1,9 @@
 package com.saaadd.character;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
 import com.saaadd.game.GameScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -13,14 +13,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
-import static com.saaadd.game.GameScreen.introCounter;
 
 public class Player extends Character implements InputProcessor {
+    private int money;
     private Vector2 movementVector;
     private int pMoving;
     private boolean[] direction;
     private boolean[] overlapX;
     public final static int front = 0, left = 1, back = 2, right = 3;
+
 
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
@@ -29,6 +30,7 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
+        money = 0;
     }
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle){
         super(legSheet, bodySheet, x, y, angle);
@@ -37,6 +39,8 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
+        money = 0;
+
 
     }
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon){
@@ -46,7 +50,15 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
+        money = 0;
 
+    }
+
+    public int getMoney(){
+        return money;
+    }
+    public void addMoney(int money){
+        this.money += money;
     }
 
     @Override
@@ -134,7 +146,7 @@ public class Player extends Character implements InputProcessor {
         }
         else if (keycode == Keys.N)
         {
-            introCounter++;
+            GameScreen.gameStage++;
         }
         else if (keycode == Keys.ESCAPE){
             Gdx.app.exit();

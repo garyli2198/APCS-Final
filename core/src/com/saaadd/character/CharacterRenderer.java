@@ -1,9 +1,11 @@
 package com.saaadd.character;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.saaadd.game.GameScreen;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
@@ -25,7 +27,10 @@ public class CharacterRenderer {
     public void renderCharacters(SpriteBatch batch) {
         for (int i = 0; i < characterList.size(); i++) {
             if (characterList.get(i).shouldRemove()) {
-                characterList.remove(i);
+                Character c = characterList.remove(i);
+                if(c instanceof  Enemy){
+                    GameScreen.player.addMoney(10);
+                }
             } else {
                 characterList.get(i).update();
                 Bullet b = characterList.get(i).hitByBullet();
@@ -53,7 +58,7 @@ public class CharacterRenderer {
         while (y > 3140) {
             y--;
         }
-        characterList.add(new Enemy(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
+        characterList.add(new Enemy(Enemy.enemyLegs, Enemy.enemyBody,
                 x, y, 0, 100, new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
     }
 

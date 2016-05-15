@@ -1,29 +1,25 @@
 package com.saaadd.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.utils.Timer;
 import com.saaadd.character.CharacterRenderer;
-import com.saaadd.character.Enemy;
 import com.saaadd.character.Player;
-import com.saaadd.character.Character;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.*;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
-import com.saaadd.game.Text;
+import com.saaadd.ui.UserInterface;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -38,13 +34,13 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     public static MapObjects mapObjects;
     public static OrthographicCamera cam;
-    private CharacterRenderer characterRenderer;
-    private BitmapFont font;
-    private Text text;
-    private WaveMatch match;
+    public static CharacterRenderer characterRenderer;
+    public static BitmapFont font;
     private Sound backgroundMusic;
-    public static int introCounter = 0;
+    public static int gameStage = 0;
     private ArrayList<String> gameText = new ArrayList<String>();
+    private Wave currentWave;
+    private UserInterface userInterface;
 
     public GameScreen(final SAAADD game) {
         //init and play background music
@@ -66,8 +62,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //font initialization
         font = new BitmapFont(Gdx.files.internal("vidgamefont.fnt"));
-        text = new Text();
-        text.addText(gameText);
 
         //gameScreen initilization
         this.game = game;
@@ -84,11 +78,17 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         characterRenderer = new CharacterRenderer();
         characterRenderer.add(player);
 
-        //Wave system init
-        match = new WaveMatch();
+        //wave init
+        currentWave = new Wave(1);
 
-        }
+        //ui init
+        userInterface = new UserInterface(this);
 
+    }
+
+    public Wave getCurrentWave(){
+        return currentWave;
+    }
 
     @Override
     public void show() {
@@ -110,27 +110,25 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         rend.render();
         //render characters
         characterRenderer.renderCharacters(batch);
-        match.renderCharacters(batch);
         //game intro text
-
         batch.begin();
-        if (introCounter == 0) {
-            font.draw(batch, gameText.get(0), player.getX(), player.getY() + 300, 10, 5, true);
-        } else if (introCounter == 1) {
-            font.draw(batch, gameText.get(1), player.getX(), player.getY() + 300, 10, 5, true);
-        } else if (introCounter == 2) {
-            font.draw(batch, gameText.get(2), player.getX(), player.getY() + 300, 10, 5, true);
-        } else {
-            font.draw(batch, "ROUND: " + String.valueOf(match.getRound()), player.getX() - Gdx.graphics.getWidth() / 3.5f,
-                    player.getY() + Gdx.graphics.getHeight() / 3.5f);
-            font.draw(batch, "MONEY: " + String.valueOf(match.getMoney()), player.getX() - Gdx.graphics.getWidth() / 3.5f,
-                    player.getY() + Gdx.graphics.getHeight() / 4);
-            if(match.getCharacterListSize()==0) {
-                font.draw(batch, "PRESS N TO START NEXT ROUND", player.getX(), player.getY() + 300, 10, 5, true);
+
+        //wave handling
+
+        if (!currentWave.hasStarted()) {
+
+            if (Gdx.input.isKeyPressed(Input.Keys.N)) {
+                currentWave.start();
             }
-            match.start();
-            match.money();
+        } else {
+            currentWave.update();
+            if (currentWave.isDone()) {
+                currentWave = currentWave.nextWave();
+
+            }
         }
+
+
         batch.end();
         //render bullets
         for (int i = 0; i < bullets.size(); i++) {
@@ -142,6 +140,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
                 s.update(Gdx.graphics.getDeltaTime());
             }
         }
+
+        //ui rendering
+        userInterface.update();
+        userInterface.draw();
 
     }
 
