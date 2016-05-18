@@ -7,12 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.saaadd.game.GameScreen;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
 import java.util.Random;
 
+import static com.saaadd.game.GameScreen.bullets;
 import static com.saaadd.game.GameScreen.player;
 
 /**
@@ -23,11 +25,16 @@ public class Enemy extends Character {
     public final static Texture enemyLegs = new Texture(Gdx.files.internal("enemyLegs.png"));
     public final static Texture enemyBody = new Texture(Gdx.files.internal("enemyBody.png"));
 
+    private Random rand = new Random();
+    private float time = 0;
+    private float radians;
     private Sound onHitSound = Gdx.audio.newSound(Gdx.files.internal("onhitsound.mp3"));
     private Sound deathSound = Gdx.audio.newSound(Gdx.files.internal("deathsound.mp3"));
     private float prevX = 0, prevY = 0;
     private boolean[] overlapX;
-
+    private float randTurn;
+    private int turnTime = rand.nextInt(4) + 1;
+    int counter = 0;
     public Enemy(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon) {
         super(legSheet, bodySheet, x, y, angle, health, weapon);
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
@@ -40,6 +47,7 @@ public class Enemy extends Character {
 
     @Override
     public void update() {
+        time += Gdx.graphics.getDeltaTime();
         int count = 0;
         float distanceFromPlayer = (float) (Math.sqrt(Math.pow(player.getX() - getX(), 2) + Math.pow(player.getY() - getY(), 2)));
         for (RectangleMapObject r : GameScreen.mapObjects.getByType(RectangleMapObject.class)) {
@@ -64,24 +72,66 @@ public class Enemy extends Character {
             count++;
 
         }
-        float radians = (float) Math.atan((player.getY() - getY()) / (player.getX() - getX()));
 
+        radians = (float) Math.atan((player.getY() - getY()) / (player.getX() - getX()));
         if (player.getX() - getX() < 0) {
-            radians += 3.14159;
+            radians += Math.PI;
         }
-
-        if (distanceFromPlayer <= 1000) {
-            float rotate = radians;
-            isMoving = true;
-            if (Math.abs(getX() - prevX) < 2 && Math.abs(getY() - prevY) < 2) {
-                radians += 3.14159 / 2;
+        float unchanged = radians;
+        int neg;
+        if (distanceFromPlayer <= 600) {
+            if(counter % 2 == 0){
+                neg = -1;
             }
+            else{
+                neg = 1;
+            }
+            if(time % turnTime < 0.01)
+            {
+                randTurn = (float)(radians + Math.random() * Math.PI/2 * neg);
+                counter++;
+                getWeapon().fire();
+            }
+
+            setRotation((float)Math.toDegrees(unchanged) - 90);
+            isMoving = true;
+
+            translate((float) (Math.cos(randTurn) * speed * 0.6), (float) (Math.sin(randTurn) * speed * 0.6));
+
+
+        }
+        else if(distanceFromPlayer>600 && distanceFromPlayer <1000){
+            for (Bullet b : bullets) {
+                if (Math.abs(b.getX() - getX()) < 250 && Math.abs(b.getY() - getY()) < 250) {
+                    radians = (float) Math.atan((b.getY() - getY()) / (b.getX() - getX()));
+                    if (b.getVector().angleRad() < Math.PI / 2 && b.getVector().angleRad() > -1 * Math.PI / 2 &&
+                            b.getVector().angleRad() < unchanged - Math.PI) {
+                        radians += Math.PI / 2;
+                    } else if (b.getVector().angleRad() < Math.PI / 2 && b.getVector().angleRad() > -1 * Math.PI / 2 &&
+                            b.getVector().angleRad() > unchanged - Math.PI) {
+                        radians -= Math.PI / 2;
+                    } else if (b.getVector().angleRad() > Math.abs(unchanged)) {
+                        radians -= Math.PI / 2;
+                    } else if (b.getVector().angleRad() < Math.abs(unchanged)) {
+                        radians += Math.PI / 2;
+                    }
+                }
+            }
+
+            //obstacle avoidance
+            if (Math.abs(getX() - prevX) < 2 && Math.abs(getY() - prevY) < 2) {
+                radians += Math.PI / 2;
+            }
+
             prevX = getX();
             prevY = getY();
-            setRotation((float) Math.toDegrees(rotate) - 90);
-            translate((float) (Math.cos(radians) * speed * .8), (float) (Math.sin(radians) * speed * .8));
-        } else {
-            isMoving = false;
+            setRotation((float) Math.toDegrees(unchanged) - 90);
+            isMoving = true;
+            translate((float) (Math.cos(radians) * speed * .6), (float) (Math.sin(radians) * speed * .6));
+        }
+        else {
+            isMoving = true;
+            translate((float) (Math.cos(radians) * speed * 5), (float) (Math.sin(radians) * speed * 5));
         }
     }
 

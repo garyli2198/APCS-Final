@@ -11,17 +11,21 @@ import com.saaadd.item.Weapon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.saaadd.game.GameScreen.player;
 
 public class CharacterRenderer {
     private List<Character> characterList;
+    private int posneg;
+    private Random rand;
 
     /**
      * Constructs a CharacterRenderer
      */
     public CharacterRenderer() {
         characterList = new ArrayList<Character>();
+        rand = new Random();
     }
 
     public void renderCharacters(SpriteBatch batch) {
@@ -40,26 +44,51 @@ public class CharacterRenderer {
                 characterList.get(i).draw(batch);
             }
         }
+
     }
 
     public void spawnEnemy() {
         //never spawns outside border
-        float x = (float) (player.getX() + 500 + Math.random() * 500);
+        characterList.add(new Enemy(Enemy.enemyLegs, Enemy.enemyBody,
+                randXpos(), randYpos(), 0, 5, new Weapon(1, "pistol",
+                new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
+    }
+
+    public float randXpos()
+    {
+        if(Math.random()<0.5) {
+            posneg = -1;
+        }
+        else{
+            posneg = 1;
+        }
+        float x = player.getX() + ((rand.nextInt(500) + 500)*posneg);
         while (x < 40) {
             x++;
         }
         while (x > 3150) {
             x--;
         }
-        float y = (float) (player.getY() + 500 + Math.random() * 500);
+
+        return x;
+    }
+
+    public float randYpos()
+    {
+        if(Math.random()<0.5) {
+            posneg = -1;
+        }
+        else{
+            posneg = 1;
+        }
+        float y = player.getY() + ((rand.nextInt(500) + 500)*posneg) ;
         while (y < 40) {
             y++;
         }
         while (y > 3140) {
             y--;
         }
-        characterList.add(new Enemy(Enemy.enemyLegs, Enemy.enemyBody,
-                x, y, 0, 100, new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
+        return y;
     }
 
     public void add(Character character) {
