@@ -157,16 +157,22 @@ public abstract class Character {
         //gun position calculations and drawing
         if (weapon != null) {
             weapon.getWeaponSprite().setSize(width, height);
+            int offset = 3;
+            if(weapon.getType() == 1){
+                offset = 5;
+            }
+            
+
             // calculates gun and fire animation position
-            float r = (float) Math.sqrt(5 * 5 + 30 * 30);
-            float theta = (float) Math.atan2(30, 5);
-            float rf = (float) Math.sqrt(5 * 5 + 45 * 45);
-            float thetaf = (float) Math.atan2(45, 5);
+            float r = (float) Math.sqrt(offset * offset + 30 * 30);
+            float theta = (float) Math.atan2(30, offset);
+            float rf = (float) Math.sqrt(offset * offset + weapon.getLength() * weapon.getLength());
+            float thetaf = (float) Math.atan2(weapon.getLength(), offset);
             weapon.setWeaponPosition(x + (float) (r * Math.cos(theta + Math.toRadians(body.getRotation()))),
                     y + (float) (r * Math.sin(theta + Math.toRadians(body.getRotation()))));
             weapon.setWeaponRotation(angle);
-            weapon.setFirePosition(x + (float) (rf * Math.cos(thetaf + Math.toRadians(body.getRotation() + 5))),
-                    y + (float) (rf * Math.sin(thetaf + Math.toRadians(body.getRotation() + 5))));
+            weapon.setFirePosition(x + (float) (rf * Math.cos(thetaf + Math.toRadians(body.getRotation() + offset))),
+                    y + (float) (rf * Math.sin(thetaf + Math.toRadians(body.getRotation() + offset))));
             weapon.draw(batch); //draw gun
         }
         if (bleeding) {

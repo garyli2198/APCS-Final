@@ -20,6 +20,7 @@ import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 import com.saaadd.ui.UserInterface;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -43,6 +44,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     private UserInterface userInterface;
 
     public GameScreen(final SAAADD game) {
+        //weapon loading
+        try {
+            Weapon.loadWeapons();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         //init and play background music
         backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
         backgroundMusic.loop();
@@ -69,7 +76,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         batch = new SpriteBatch();
 
         //test characters
-        Weapon w = new Weapon(1, "pistol", new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10);
+        Weapon w = Weapon.copyOf(Weapon.weapons.get("minigun"));
         player = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
                 cam.position.x, cam.position.y, 0, 100, w);
 
@@ -117,7 +124,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         if (!currentWave.hasStarted()) {
 
-            if (Gdx.input.isKeyPressed(Input.Keys.N)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.N) && gameStage > 2) {
                 currentWave.start();
             }
         } else {

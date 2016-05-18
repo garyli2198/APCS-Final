@@ -3,19 +3,14 @@ package com.saaadd.item;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Item {
-    private int id;
     private String name;
     private Texture image;
-    public Item(int id, String name, Texture image){
-        this.id = id;
+    public Item(String name, Texture image){
         this.name = name;
         this.image = image;
 
     }
 
-    public int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
@@ -23,10 +18,6 @@ public class Item {
 
     public Texture getImage() {
         return image;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setImage(Texture image) {

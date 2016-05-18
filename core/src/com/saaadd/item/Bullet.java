@@ -23,7 +23,7 @@ public class Bullet {
     {
         radians = (float) Math.toRadians(w.getWeaponSprite().getRotation() + 90);
         weapon = w;
-        float speed = 10;
+        float speed = w.getBulletSpeed();
         dx = (float) Math.cos(radians)*speed;
         dy = (float) Math.sin(radians)*speed;
         posX = w.getFireX();

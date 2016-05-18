@@ -21,7 +21,7 @@ public class Player extends Character implements InputProcessor {
     private boolean[] direction;
     private boolean[] overlapX;
     public final static int front = 0, left = 1, back = 2, right = 3;
-
+    private boolean mouseDown;
 
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
@@ -69,6 +69,11 @@ public class Player extends Character implements InputProcessor {
     @Override
     public void update() {
         this.isMoving = pMoving > 0;
+
+        if(mouseDown){
+            getWeapon().fire();
+        }
+
         boolean[] d = direction;
         int count = 0;
         for(RectangleMapObject r : GameScreen.mapObjects.getByType(RectangleMapObject.class)){
@@ -183,20 +188,25 @@ public class Player extends Character implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        this.getWeapon().fire();
+        if(!getWeapon().isAuto()) {
+            this.getWeapon().fire();
+        }
+        mouseDown = true;
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // TODO Auto-generated method stub
-        return false;
+        mouseDown = false;
+        return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        // TODO Auto-generated method stub
-        return false;
+        Vector2 vect = new Vector2(screenX - Gdx.graphics.getWidth() / 2f, screenY - Gdx.graphics.getHeight() / 2f);
+        this.setRotation(270 - vect.angle());
+        movementVector = vect.setLength(speed).scl(1, -1);
+        return true;
     }
 
     @Override
