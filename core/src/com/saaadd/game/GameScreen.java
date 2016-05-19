@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class GameScreen extends ApplicationAdapter implements Screen {
     public static float stateTime;
     public static Player player;
-    private SAAADD game;
+    public static SAAADD game;
     private SpriteBatch batch;
     private TiledMapRenderer rend;
     private TiledMap tile;
@@ -50,7 +50,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        //init and play background music
+        //play background music
         backgroundMusic = Gdx.audio.newSound(Gdx.files.internal("background.mp3"));
         backgroundMusic.loop();
 
@@ -122,7 +122,7 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
         //wave handling
 
-        if (!currentWave.hasStarted()) {
+        if (!currentWave.hasStarted() && !player.shouldRemove()) {
 
             if (Gdx.input.isKeyPressed(Input.Keys.N) && gameStage > 2) {
                 currentWave.start();
@@ -152,7 +152,16 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         userInterface.update();
         userInterface.draw();
 
+        //death handling
+        if(player.shouldRemove()){
+            backgroundMusic.dispose();
+            gameStage = 0;
+            game.setScreen(new DeathScreen(game,this));
+        }
+
     }
+
+
 
     @Override
     public void resize(int width, int height) {
