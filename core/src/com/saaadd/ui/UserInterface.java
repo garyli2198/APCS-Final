@@ -9,6 +9,7 @@ import com.saaadd.game.GameScreen;
  * Created by stanl on 5/13/2016.
  */
 public class UserInterface {
+
     private SpriteBatch batch;
     private HealthBar healthBar;
     private GameScreen screen;

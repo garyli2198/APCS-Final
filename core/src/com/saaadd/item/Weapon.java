@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Weapon extends Item {
+public class Weapon {
     public static HashMap<String, Weapon> weapons = new HashMap<String , Weapon>();
     //weapontypes
     public static final int oneH = 1, twoH = 2, dual = 0;
@@ -33,9 +33,12 @@ public class Weapon extends Item {
     private int length;
     private int bulletSpeed;
     private Sound bulletFire;
+    private String name;
+    private Texture image;
     public Weapon(String name, Texture image, int weaponType, float fireRate, int damage, int length,
                   int bulletSpeed, boolean isAuto) {
-        super(name, image);
+        this.name = name;
+        this.image = image;
         type = weaponType;
         weaponSprite = new Sprite(image);
         TextureRegion[] fireFrames = TextureRegion.split(new Texture(Gdx.files.internal("weapons/gunfire.png")), 61, 61)[0];
@@ -72,6 +75,28 @@ public class Weapon extends Item {
 
     }
 
+    public boolean equals(Object other){
+        if(other instanceof Weapon) {
+            return this.getName().equals(((Weapon) other).getName());
+        }
+        return false;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Texture getImage() {
+        return image;
+    }
+
+    public void setImage(Texture image) {
+        this.image = image;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     public int getType(){
         return type;
     }

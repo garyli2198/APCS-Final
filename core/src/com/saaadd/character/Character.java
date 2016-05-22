@@ -250,6 +250,9 @@ public abstract class Character {
     }
 
     public void setWeapon(Weapon weapon) {
+        if(this.weapon.getType() != weapon.getType()){
+            body = new Sprite(bodyFrames[weapon.getType()]);
+        }
         this.weapon = weapon;
     }
 

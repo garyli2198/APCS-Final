@@ -13,20 +13,26 @@ import com.badlogic.gdx.math.Vector2;
 import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 
 public class Player extends Character implements InputProcessor {
     private int money;
-    private Vector2 movementVector;
     private int pMoving;
     private boolean[] direction;
     private boolean[] overlapX;
     public final static int front = 0, left = 1, back = 2, right = 3;
     private boolean mouseDown;
+    private LinkedList<Weapon> inventory;
+    private ListIterator<Weapon> iter;
+    private int singleAmmo;
+    private int autoAmmo;
 
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
         Gdx.input.setInputProcessor(this);
-        movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
@@ -35,7 +41,6 @@ public class Player extends Character implements InputProcessor {
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle){
         super(legSheet, bodySheet, x, y, angle);
         Gdx.input.setInputProcessor(this);
-        movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
@@ -43,15 +48,21 @@ public class Player extends Character implements InputProcessor {
 
 
     }
+
     public Player(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon){
         super(legSheet, bodySheet, x, y, angle, health, weapon);
         Gdx.input.setInputProcessor(this);
-        movementVector = new Vector2();
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
         money = 0;
-
+        inventory = new LinkedList<Weapon>();
+        inventory.add(weapon);
+        inventory.add(Weapon.copyOf(Weapon.weapons.get("pistol")));
+        inventory.add(Weapon.copyOf(Weapon.weapons.get("sniper")));
+        iter = inventory.listIterator();
+        singleAmmo = 100;
+        autoAmmo = 100;
     }
 
     public int getMoney(){
@@ -68,12 +79,14 @@ public class Player extends Character implements InputProcessor {
 
     @Override
     public void update() {
+        //movement
         this.isMoving = pMoving > 0;
-
-        if(mouseDown){
+        //automatic fire handling
+        if(mouseDown && getWeapon().isAuto() && autoAmmo > 0){
+            autoAmmo--;
             getWeapon().fire();
         }
-
+        //object detection
         boolean[] d = direction;
         int count = 0;
         for(RectangleMapObject r : GameScreen.mapObjects.getByType(RectangleMapObject.class)){
@@ -101,21 +114,22 @@ public class Player extends Character implements InputProcessor {
             count++;
 
         }
-        //this.setLocation(GameScreen.cam.position.x, GameScreen.cam.position.y);
+
+        //movement
         GameScreen.cam.position.x = getX();
         GameScreen.cam.position.y = getY();
         if (isMoving) {
             if (direction[back]) {
-                translate(0,-5);
+                translate(0,-speed);
             }
             if(direction[right]){
-                translate(5,0);
+                translate(speed,0);
             }
             if(direction[left]){
-                translate(-5,0);
+                translate(-speed,0);
             }
             if(direction[front]) {
-                translate(0,5);
+                translate(0,speed);
             }
 
         }
@@ -188,7 +202,8 @@ public class Player extends Character implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(!getWeapon().isAuto()) {
+        if(!getWeapon().isAuto() && singleAmmo > 0) {
+            singleAmmo--;
             this.getWeapon().fire();
         }
         mouseDown = true;
@@ -205,7 +220,6 @@ public class Player extends Character implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector2 vect = new Vector2(screenX - Gdx.graphics.getWidth() / 2f, screenY - Gdx.graphics.getHeight() / 2f);
         this.setRotation(270 - vect.angle());
-        movementVector = vect.setLength(speed).scl(1, -1);
         return true;
     }
 
@@ -213,15 +227,33 @@ public class Player extends Character implements InputProcessor {
     public boolean mouseMoved(int screenX, int screenY) {
         Vector2 vect = new Vector2(screenX - Gdx.graphics.getWidth() / 2f, screenY - Gdx.graphics.getHeight() / 2f);
         this.setRotation(270 - vect.angle());
-        movementVector = vect.setLength(speed).scl(1, -1);
 
         return true;
     }
 
     @Override
     public boolean scrolled(int amount) {
-        // TODO Auto-generated method stub
-        return false;
+        if(amount == 1){
+            if(iter.hasNext()) {
+                setWeapon(iter.next());
+            }
+            else{
+                setWeapon(inventory.getFirst());
+                iter = inventory.listIterator();
+            }
+
+        }
+        else if( amount == -1 ){
+            if(iter.hasPrevious()){
+                setWeapon(iter.previous());
+            }
+            else{
+                setWeapon(inventory.getLast());
+                iter = inventory.listIterator(inventory.size() - 1);
+            }
+        }
+
+        return true;
     }
 
 }

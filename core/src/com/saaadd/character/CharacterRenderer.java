@@ -1,9 +1,6 @@
 package com.saaadd.character;
 
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.saaadd.game.GameScreen;
 import com.saaadd.item.Bullet;
@@ -50,8 +47,7 @@ public class CharacterRenderer {
     public void spawnEnemy() {
         //never spawns outside border
         characterList.add(new Enemy(Enemy.enemyLegs, Enemy.enemyBody,
-                randXpos(), randYpos(), 0, 5, new Weapon(1, "pistol",
-                new Texture(Gdx.files.internal("weapons/1h_pistol.png")), Weapon.oneH, 0.3f, 10)));
+                randXpos(), randYpos(), 0, 5, Weapon.copyOf(Weapon.weapons.get("pistol"))));
     }
 
     public float randXpos()
