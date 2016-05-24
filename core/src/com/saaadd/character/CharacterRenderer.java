@@ -47,7 +47,7 @@ public class CharacterRenderer {
     public void spawnEnemy() {
         //never spawns outside border
         characterList.add(new Enemy(Enemy.enemyLegs, Enemy.enemyBody,
-                randXpos(), randYpos(), 0, 5, Weapon.copyOf(Weapon.weapons.get("pistol"))));
+                randXpos(), randYpos(), 0, 50, Weapon.copyOf(Weapon.weapons.get("pistol"))));
     }
 
     public float randXpos()

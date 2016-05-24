@@ -1,6 +1,5 @@
 package com.saaadd.item;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,8 +34,9 @@ public class Weapon {
     private Sound bulletFire;
     private String name;
     private Texture image;
+    private int price;
     public Weapon(String name, Texture image, int weaponType, float fireRate, int damage, int length,
-                  int bulletSpeed, boolean isAuto) {
+                  int bulletSpeed, boolean isAuto, int price) {
         this.name = name;
         this.image = image;
         type = weaponType;
@@ -51,11 +51,11 @@ public class Weapon {
         bulletFire = Gdx.audio.newSound(Gdx.files.internal("bulletsound.mp3"));
         this.length = length;
         this.bulletSpeed = bulletSpeed;
-
+        this.price = price;
     }
     public static Weapon copyOf( Weapon weapon ){
         return new Weapon(weapon.getName(), weapon.getImage(), weapon.getType(), weapon.getFireRate(),weapon.getDamage(),
-                weapon.getLength(), weapon.getBulletSpeed(), weapon.isAuto());
+                weapon.getLength(), weapon.getBulletSpeed(), weapon.isAuto(), weapon.getPrice());
     }
     public static void loadWeapons() throws FileNotFoundException {
         File file = new File("weapons.data");
@@ -69,7 +69,8 @@ public class Weapon {
             int length = scan.nextInt();
             int bulletSpeed = scan.nextInt();
             boolean auto = scan.nextBoolean();
-            Weapon weapon = new Weapon(name, texture, type, fireRate, damage, length, bulletSpeed, auto);
+            int price = scan.nextInt();
+            Weapon weapon = new Weapon(name, texture, type, fireRate, damage, length, bulletSpeed, auto, price);
             weapons.put(name, weapon);
         }
 
@@ -181,5 +182,11 @@ public class Weapon {
     }
     public float getFireRate(){
         return fireRate;
+    }
+    public boolean isFiring(){
+        return firing;
+    }
+    public int getPrice(){
+        return price;
     }
 }

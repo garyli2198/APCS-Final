@@ -128,6 +128,9 @@ public abstract class Character {
 
     public void addHealth(int h) {
         health += h;
+        if(health > Character.defaultHealth){
+            health = Character.defaultHealth;
+        }
     }
 
     public int getHealth() {
@@ -250,11 +253,16 @@ public abstract class Character {
     }
 
     public void setWeapon(Weapon weapon) {
-        if(this.weapon.getType() != weapon.getType()){
+        if(this.weapon == null || this.weapon.getType() != weapon.getType()){
             body = new Sprite(bodyFrames[weapon.getType()]);
         }
         this.weapon = weapon;
     }
-
+    public float getWidth(){
+        return width;
+    }
+    public float getHeight(){
+        return height;
+    }
 
 }

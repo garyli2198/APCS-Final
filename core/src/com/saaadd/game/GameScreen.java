@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.saaadd.character.CharacterRenderer;
+import com.saaadd.character.Enemy;
+import com.saaadd.character.Merchant;
 import com.saaadd.character.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -41,7 +43,8 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static int gameStage = 0;
     private ArrayList<String> gameText = new ArrayList<String>();
     private Wave currentWave;
-    private UserInterface userInterface;
+    public static UserInterface userInterface;
+    private Merchant nurse;
 
     public GameScreen(final SAAADD game) {
         //weapon loading
@@ -75,21 +78,32 @@ public class GameScreen extends ApplicationAdapter implements Screen {
         stateTime = 0f;
         batch = new SpriteBatch();
 
+
+
         //test characters
-        Weapon w = Weapon.copyOf(Weapon.weapons.get("minigun"));
+        Weapon w = Weapon.copyOf(Weapon.weapons.get("pistol"));
         player = new Player(new Texture(Gdx.files.internal("legs.png")), new Texture(Gdx.files.internal("officerbody.png")),
                 cam.position.x, cam.position.y, 0, 100, w);
 
+        //ui init
+        userInterface = new UserInterface(this);
 
-        //Character Renderer initialization
+        //merchant init
+        nurse = new Merchant(Merchant.nurseLegs, Merchant.nurseBody, 300, 300, 90,
+                new ArrayList<Weapon>(), Merchant.healthAmmo);
+        nurse.getStore().addWeapon(Weapon.copyOf(Weapon.weapons.get("minigun")));
+        nurse.setWeapon(Weapon.copyOf(Weapon.weapons.get("healthgun")));
+
+
+        //Character Renderer initialization4
         characterRenderer = new CharacterRenderer();
         characterRenderer.add(player);
+        characterRenderer.add(nurse);
 
         //wave init
         currentWave = new Wave(1);
 
-        //ui init
-        userInterface = new UserInterface(this);
+
 
     }
 

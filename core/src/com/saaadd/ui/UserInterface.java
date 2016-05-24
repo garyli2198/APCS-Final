@@ -1,9 +1,11 @@
 package com.saaadd.ui;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.saaadd.character.Store;
 import com.saaadd.game.GameScreen;
+
+import java.util.ArrayList;
 
 /**
  * Created by stanl on 5/13/2016.
@@ -14,9 +16,11 @@ public class UserInterface {
     private HealthBar healthBar;
     private GameScreen screen;
     private String[] introText;
-
+    private ArrayList<Store> stores;
+    private WeaponDisplay weaponDisplay;
     public UserInterface(GameScreen screen){
         healthBar = new HealthBar();
+        weaponDisplay = new WeaponDisplay();
         batch = new SpriteBatch();
         this.screen = screen;
         introText = new String[]{
@@ -27,9 +31,15 @@ public class UserInterface {
                 "Your name is Dylan Dickless.\n You are the biggest Cuckold in the universe.\n" +
                         "Try to survive as long as possible. Good Luck!\n" + "(Press N to continue or ESC to quit)"
         };
+        stores = new ArrayList<Store>();
     }
+    public void addStore(Store s){
+        stores.add(s);
+    }
+
     public void update(){
         healthBar.update();
+        weaponDisplay.update();
     }
     public void draw(){
         batch.setProjectionMatrix(GameScreen.cam.combined);
@@ -55,5 +65,7 @@ public class UserInterface {
         }
         batch.end();
         healthBar.draw();
+        weaponDisplay.draw();
+
     }
 }

@@ -29,6 +29,7 @@ public class Player extends Character implements InputProcessor {
     private ListIterator<Weapon> iter;
     private int singleAmmo;
     private int autoAmmo;
+    private int healthAmmo;
 
     public Player(Texture legSheet, Texture bodySheet) {
         super(legSheet, bodySheet);
@@ -58,11 +59,12 @@ public class Player extends Character implements InputProcessor {
         money = 0;
         inventory = new LinkedList<Weapon>();
         inventory.add(weapon);
-        inventory.add(Weapon.copyOf(Weapon.weapons.get("pistol")));
-        inventory.add(Weapon.copyOf(Weapon.weapons.get("sniper")));
+        inventory.add(Weapon.copyOf(Weapon.weapons.get("healthgun")));
+
         iter = inventory.listIterator();
         singleAmmo = 100;
         autoAmmo = 100;
+        healthAmmo = 2;
     }
 
     public int getMoney(){
@@ -71,7 +73,20 @@ public class Player extends Character implements InputProcessor {
     public void addMoney(int money){
         this.money += money;
     }
-
+    public int getAmmo(){
+        if(getWeapon().isAuto()){
+            return autoAmmo;
+        }
+        else if(getWeapon().equals(Weapon.weapons.get("pistol"))){
+            return 999999;
+        }
+        else if(getWeapon().equals(Weapon.weapons.get("healthgun"))){
+            return healthAmmo;
+        }
+        else{
+            return singleAmmo;
+        }
+    }
     @Override
     public boolean shouldRemove() {
         return getHealth() <= 0;
@@ -196,14 +211,42 @@ public class Player extends Character implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        // TODO Auto-generated method stub
+        if(character == 'e'){
+            if(iter.hasNext()) {
+                setWeapon(iter.next());
+            }
+            else{
+                setWeapon(inventory.getFirst());
+                iter = inventory.listIterator();
+            }
+        }
+        else if(character == 'q'){
+            if(iter.hasPrevious()){
+                setWeapon(iter.previous());
+            }
+            else{
+                setWeapon(inventory.getLast());
+                iter = inventory.listIterator(inventory.size() - 1);
+            }
+        }
         return false;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(!getWeapon().isAuto() && singleAmmo > 0) {
-            singleAmmo--;
+        if(!getWeapon().isAuto() && singleAmmo > 0 && !getWeapon().equals(Weapon.weapons.get("pistol"))) {
+            if(getWeapon().equals(Weapon.weapons.get("healthgun"))){
+                if(healthAmmo > 0 && !getWeapon().isFiring()) {
+                    healthAmmo--;
+                }
+            }
+            else {
+                if(singleAmmo > 0 && !getWeapon().isFiring()) {
+                    singleAmmo--;
+                }
+            }
+        }
+        if(getWeapon().equals(Weapon.weapons.get("pistol")) || getAmmo() >= 0) {
             this.getWeapon().fire();
         }
         mouseDown = true;
@@ -243,7 +286,7 @@ public class Player extends Character implements InputProcessor {
             }
 
         }
-        else if( amount == -1 ){
+        else if( amount == -1){
             if(iter.hasPrevious()){
                 setWeapon(iter.previous());
             }
