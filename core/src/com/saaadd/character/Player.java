@@ -1,6 +1,5 @@
 package com.saaadd.character;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -37,7 +36,7 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
-        money = 0;
+        money = 1000;
         inventory = new ArrayList<Weapon>();
         inventory.add(weapon);
         iter = inventory.listIterator();
@@ -272,22 +271,21 @@ public class Player extends Character implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         if(amount == 1){
-            if(iter.hasNext()) {
-                setWeapon(iter.next());
+            if(weaponIndex < inventory.size() -1 ){
+                weaponIndex++;
+                setWeapon(inventory.get(weaponIndex));
+            }else{
+                weaponIndex = 0;
+                setWeapon(inventory.get(weaponIndex));
             }
-            else{
-                setWeapon(inventory.get(0));
-                iter = inventory.listIterator();
-            }
-
         }
-        else if( amount == -1){
-            if(iter.hasPrevious()){
-                setWeapon(iter.previous());
-            }
-            else{
-                setWeapon(inventory.get(inventory.size()-1));
-                iter = inventory.listIterator(inventory.size() - 1);
+        else if(amount == -1){
+            if(weaponIndex == 0){
+                weaponIndex = inventory.size()- 1;
+                setWeapon(inventory.get(weaponIndex));
+            }else{
+                weaponIndex--;
+                setWeapon(inventory.get(weaponIndex));
             }
         }
 

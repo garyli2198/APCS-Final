@@ -20,7 +20,12 @@ import static com.saaadd.game.GameScreen.cam;
 import static com.saaadd.game.GameScreen.player;
 
 /**
- * Created by stanl on 5/11/2016.
+ * Enemy class is a character that attacks the player
+ * @author Stanley Huang
+ * @version April 24, 2016
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ * @author Sources - Gary Li, Wesley Pangd by stanl on 5/11/2016.
  */
 public class Enemy extends Character {
 
@@ -42,6 +47,18 @@ public class Enemy extends Character {
     private ShapeRenderer renderer;
     private float maxHealthWidth;
 
+
+
+    /**
+     * Constructs an Enemy. Initializes healthbar and shaperenderer
+     * @param legSheet  = leg sheet with walking animations
+     * @param bodySheet = body sheet with body types: dual, 1h, 2h
+     * @param x         = x coordinate of world
+     * @param y         = y coordinate of world
+     * @param angle     = rotation angle
+     * @param health    = health
+     * @param weapon    = weapon to be held
+     */
     public Enemy(Texture legSheet, Texture bodySheet, float x, float y, float angle, int health, Weapon weapon) {
         super(legSheet, bodySheet, x, y, angle, health, weapon);
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
@@ -52,11 +69,22 @@ public class Enemy extends Character {
         turnTime = rand.nextInt(4) + 1;
     }
 
+    /**
+     * return true if health is <= 0
+     * @return health <= 0
+     */
     @Override
     public boolean shouldRemove() {
         return getHealth() <= 0;
     }
 
+    /**
+     * updates Enemy position:
+     * checks for object collision
+     * moves enemy toward player
+     * at certain distance randomly strafe && fire weapon weapon direction changes
+     * update healthbar width and color
+     */
     @Override
     public void update() {
         time += Gdx.graphics.getDeltaTime();
@@ -153,6 +181,11 @@ public class Enemy extends Character {
 
     }
 
+    /**
+     * substracts damage to health
+     * plays sounds for on hit situation and death when appropriate
+     * @param bullet = bullet that hit this character
+     */
     @Override
     public void onHit(Bullet bullet) {
         addHealth(-1 * bullet.getWeapon().getDamage());
@@ -164,6 +197,11 @@ public class Enemy extends Character {
         onHitSound.play();
     }
 
+    /**
+     * draws character (super)
+     * draws healthbar
+     * @param batch = batch used for drawing
+     */
     public void draw(SpriteBatch batch){
         super.draw(batch);
         renderer.setProjectionMatrix(cam.combined);

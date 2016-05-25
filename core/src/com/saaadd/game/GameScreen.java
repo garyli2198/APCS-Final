@@ -129,7 +129,6 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void render(float delta) {
-        System.out.println(player.getX() + " " + player.getY());
         //update statetime
         stateTime += Gdx.graphics.getDeltaTime();
         //update color background

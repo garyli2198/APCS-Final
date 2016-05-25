@@ -43,6 +43,51 @@ public class Store {
         weapons.add(weapon);
     }
     public void update(){
+        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
+            if(select < weapons.size()){
+                select++;
+            }
+        }
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
+            if(select != 1){
+                select--;
+            }
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            if(!cannotBuy){
+                bought.play(1);
+            }else{
+                denied.play(1);
+            }
+            if(select == 0){
+                if(ammoType == 0 && !cannotBuy){
+                    GameScreen.player.addHealthAmmo(2);
+                    GameScreen.player.addMoney(-20);
+
+                }
+                else if(ammoType == 1 && !cannotBuy){
+
+                    GameScreen.player.addSingleAmmo(20);
+                    GameScreen.player.addMoney(-40);
+
+                }else{
+                    if(!cannotBuy){
+                        GameScreen.player.addAutoAmmo(100);
+                        GameScreen.player.addMoney(-40);
+                    }
+                }
+            } else {
+                if (!cannotBuy) {
+                    GameScreen.player.getInventory().add(weapons.get(select - 1));
+                    GameScreen.player.addMoney(weapons.get(select - 1).getPrice() * -1);
+                }
+            }
+        } else if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+            select = 0;
+        } else if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
+            select = 1;
+        }
+
+
         if(select == 0){
             if(ammoType == 0 && GameScreen.player.getInventory().contains(Weapon.weapons.get("healthgun")) && GameScreen.player.getMoney()>20)
             {
@@ -64,53 +109,11 @@ public class Store {
             }
         }
         else{
-            cannotBuy = GameScreen.player.getInventory().contains(Weapon.weapons.get(select - 1)) ||
+            cannotBuy = GameScreen.player.getInventory().contains(weapons.get(select - 1)) ||
                     GameScreen.player.getMoney() < weapons.get(select - 1).getPrice();
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
-            if(select < weapons.size()){
-                select++;
-            }
-        }
-        else if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
-            if(select != 1){
-                select--;
-            }
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            if(!cannotBuy){
-                bought.play(1);
-            }else{
-                denied.play(1);
-            }
-            if(select == 0){
-                if(ammoType == 0 && !cannotBuy){
-                        GameScreen.player.addHealthAmmo(2);
-                        GameScreen.player.addMoney(-20);
 
-                }
-                else if(ammoType == 1 && !cannotBuy){
-
-                        GameScreen.player.addSingleAmmo(20);
-                        GameScreen.player.addMoney(-40);
-
-                }else{
-                    if(!cannotBuy){
-                        GameScreen.player.addAutoAmmo(100);
-                        GameScreen.player.addMoney(-40);
-                    }
-                }
-            } else {
-                if (!cannotBuy) {
-                    GameScreen.player.getInventory().add(weapons.get(select - 1));
-                    GameScreen.player.addMoney(weapons.get(select - 1).getPrice() * -1);
-                }
-            }
-        } else if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            select = 0;
-        } else if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-            select = 1;
-        }
 
     }
 
