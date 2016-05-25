@@ -1,6 +1,0 @@
-pistol 1h_pistol.png 1 0.3 10 45 10 false 10
-smg 1h_smg.png 1 0.15 6 50 10 true 50
-machinegun 2h_machinegun.png 2 0.2 8 60 15 true 100
-sniper 2h_sniper.png 2 1.5 100 65 25 false 125
-minigun 2h_minigun.png 2 0.05 6 62 15 true 250
-healthgun 2h_icegun.png 2 0.5 -20 0 0 false 50
