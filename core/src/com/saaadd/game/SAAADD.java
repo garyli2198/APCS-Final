@@ -3,6 +3,7 @@ package com.saaadd.game;
 import com.badlogic.gdx.Game;
 
 /**
+ * game class
  * @author Stanley Huang
  * @version 5/24/16
  *

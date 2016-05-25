@@ -13,9 +13,10 @@ import com.saaadd.item.Bullet;
 import com.saaadd.item.Weapon;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 /**
+ * Describes the main player character
+ *
  * @author Stanley Huang
  * @version 5/24/16
  *
@@ -33,7 +34,6 @@ public class Player extends Character implements InputProcessor {
     public final static int front = 0, left = 1, back = 2, right = 3;
     private boolean mouseDown;
     private ArrayList<Weapon> inventory;
-    private ListIterator<Weapon> iter;
     private int singleAmmo;
     private int autoAmmo;
     private int healthAmmo;
@@ -57,7 +57,6 @@ public class Player extends Character implements InputProcessor {
         money = 1000;
         inventory = new ArrayList<Weapon>();
         inventory.add(weapon);
-        iter = inventory.listIterator();
         singleAmmo = 100;
         autoAmmo = 100;
         healthAmmo = 2;

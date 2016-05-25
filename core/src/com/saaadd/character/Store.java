@@ -15,6 +15,8 @@ import com.saaadd.item.Weapon;
 import java.util.ArrayList;
 
 /**
+ * Store method that contains the game store mechanics
+ *
  * @author Stanley Huang
  * @version 5/24/16
  *

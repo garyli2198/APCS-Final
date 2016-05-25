@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.awt.*;
 
 /**
+ * Main menu Screen for before game starts
  * @author Gary Li
  * @version 5/24/16
  *

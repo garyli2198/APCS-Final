@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
+ * Death Screen class for when the player dies. Provides options to restart or quit
  * @author Gary Li
  * @version 5/24/16
  *

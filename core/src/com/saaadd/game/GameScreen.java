@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
+ * Main Gamescreen; renders main map and all characters
  * @author Stanley Huang
  * @version 5/24/16
  *

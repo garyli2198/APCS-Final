@@ -5,6 +5,7 @@ import com.saaadd.character.Character;
 import com.saaadd.character.Enemy;
 
 /**
+ * wave class that includes mechanics for each round and enemy spawning mechanics
  * @author Stanley Huang
  * @version 5/24/16
  *

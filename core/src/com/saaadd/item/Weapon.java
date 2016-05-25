@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
 /**
+ * Weapon class that stores all weapons in a Hashmap
  * @author Stanley Huang
  * @version 5/24/16
  *

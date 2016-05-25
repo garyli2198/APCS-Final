@@ -9,6 +9,7 @@ import com.saaadd.game.GameScreen;
 
 
 /**
+ * Bullet class
  * @author Gary Li
  * @version 5/24/16
  *
