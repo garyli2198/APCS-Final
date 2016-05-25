@@ -11,7 +11,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.awt.*;
 
 /**
- * Created by Gary on 5/13/2016.
+ * @author Gary Li
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Stanley Huang, Wesley Pang
  */
 public class MainMenuScreen implements Screen {
     private SAAADD game;
@@ -19,6 +25,11 @@ public class MainMenuScreen implements Screen {
     private BitmapFont font;
     private boolean isLoading;
     private Sound mainBackground, mainClick;
+
+    /**
+     * constructor for new main menu screen
+     * @param game game that the main menu will eventually load into
+     */
     public MainMenuScreen(final SAAADD game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -35,6 +46,10 @@ public class MainMenuScreen implements Screen {
 
     }
 
+    /**
+     * renders main menu
+     * @param delta delta time
+     */
     @Override
     public void render(float delta) {
         if(isLoading) {

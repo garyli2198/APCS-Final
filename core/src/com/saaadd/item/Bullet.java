@@ -9,7 +9,13 @@ import com.saaadd.game.GameScreen;
 
 
 /**
- * Created by Gary on 5/10/2016.
+ * @author Gary Li
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Wesley Pang, Stanley Huang
  */
 public class Bullet {
 
@@ -19,6 +25,11 @@ public class Bullet {
     private float dx,dy;
     private boolean remove;
     private float lifeTime = 2, lifeTimer;
+
+    /**
+     * constructs a bullet of weapon w
+     * @param w weapon
+     */
     public Bullet(Weapon w)
     {
         radians = (float) Math.toRadians(w.getWeaponSprite().getRotation() + 90);
@@ -29,6 +40,11 @@ public class Bullet {
         posX = w.getFireX();
         posY = w.getFireY();
     }
+
+    /**
+     *
+     * @return
+     */
     public Weapon getWeapon(){
         return weapon;
     }

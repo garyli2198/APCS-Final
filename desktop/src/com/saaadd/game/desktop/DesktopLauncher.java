@@ -9,9 +9,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "S.A.A.A.D.D.";
-        config.height = 1080;
-        config.width = 1920;
-        config.fullscreen = false;
+        config.height = 1280;
+        config.width = 800;
+        config.fullscreen = true;
 		new LwjglApplication(new SAAADD(), config);
 	}
 }

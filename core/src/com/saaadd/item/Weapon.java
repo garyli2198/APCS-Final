@@ -13,7 +13,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Scanner;
-
+/**
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
+ */
 public class Weapon {
     public static HashMap<String, Weapon> weapons = new HashMap<String , Weapon>();
     //weapontypes
@@ -35,6 +43,19 @@ public class Weapon {
     private String name;
     private Texture image;
     private int price;
+
+    /**
+     * Constructs a weapon
+     * @param name weapon name
+     * @param image weapon image
+     * @param weaponType weapon type (e.g. single handed, two handed)
+     * @param fireRate weapon fire rate
+     * @param damage weapon damage
+     * @param length weapon length
+     * @param bulletSpeed bullet speed
+     * @param isAuto whether or not weapon is automatic
+     * @param price weapon price
+     */
     public Weapon(String name, Texture image, int weaponType, float fireRate, int damage, int length,
                   int bulletSpeed, boolean isAuto, int price) {
         this.name = name;
@@ -54,10 +75,21 @@ public class Weapon {
         this.bulletSpeed = bulletSpeed;
         this.price = price;
     }
+
+    /**
+     * returns a copy of a weapon object specified in the parameter
+     * @param weapon weapon name
+     * @return weapon object with name in parameter
+     */
     public static Weapon copyOf( Weapon weapon ){
         return new Weapon(weapon.getName(), weapon.getImage(), weapon.getType(), weapon.getFireRate(),weapon.getDamage(),
                 weapon.getLength(), weapon.getBulletSpeed(), weapon.isAuto(), weapon.getPrice());
     }
+
+    /**
+     * loads weapon data from weapons.data and stores them in the weapons HashMap
+     * @throws FileNotFoundException
+     */
     public static void loadWeapons() throws FileNotFoundException {
         File file = new File("weapons.data");
         Scanner scan = new Scanner(file);
@@ -77,6 +109,11 @@ public class Weapon {
 
     }
 
+    /**
+     * compares two weapons
+     * @param other other weapon
+     * @return if same weapon
+     */
     public boolean equals(Object other){
         if(other instanceof Weapon) {
             return this.getName().equals(((Weapon) other).getName());
@@ -84,23 +121,50 @@ public class Weapon {
         return false;
     }
 
+    /**
+     * gets weapon name
+     * @return weapon name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * gets weapon image
+     * @return weapon image
+     */
     public Texture getImage() {
         return image;
     }
+
+    /**
+     * gets weapon type
+     * @return weapon type
+     */
     public int getType(){
         return type;
     }
+
+    /**
+     * gets weapon sprite
+     * @return weapon sprite
+     */
     public Sprite getWeaponSprite(){
         return weaponSprite;
     }
+
+    /**
+     * gets weapon damage
+     * @return weapon damage
+     */
     public int getDamage(){
         return damage;
     }
 
+    /**
+     * draws weapon
+     * @param batch SpriteBatch
+     */
     public void draw(SpriteBatch batch){
         float angle = weaponSprite.getRotation();
         if(firing){
@@ -127,6 +191,9 @@ public class Weapon {
         batch.end();
     }
 
+    /**
+     * fires weapon
+     */
     public void fire(){
         if(!firing) {
             firing = true;
@@ -140,6 +207,11 @@ public class Weapon {
 
     }
 
+    /**
+     * sets weapon position
+     * @param x x position
+     * @param y y position
+     */
     public void setWeaponPosition(float x, float y){
         weaponSprite.setCenter(x, y);
         centerx = x;
@@ -154,32 +226,67 @@ public class Weapon {
         firey = y;
     }
 
+    /**
+     * @return firing x position
+     */
     public float getFireX()
     {
         return firex;
     }
+
+    /**
+     * @return firing y position
+     */
     public float getFireY()
     {
         return firey;
     }
+
+    /**
+     * @return whether or not weapon is automatic
+     */
     public boolean isAuto(){
         return auto;
     }
+
+    /**
+     * @return name
+     */
     public String toString(){
         return getName();
     }
+
+    /**
+     * @return weapon length
+     */
     public int getLength(){
         return length;
     }
+
+    /**
+     * @return weapon bullet speed
+     */
     public int getBulletSpeed(){
         return  bulletSpeed;
     }
+
+    /**
+     * @return weapon fire rate
+     */
     public float getFireRate(){
         return fireRate;
     }
+
+    /**
+     * @return whether or not weapon is firing
+     */
     public boolean isFiring(){
         return firing;
     }
+
+    /**
+     * @return weapon price
+     */
     public int getPrice(){
         return price;
     }

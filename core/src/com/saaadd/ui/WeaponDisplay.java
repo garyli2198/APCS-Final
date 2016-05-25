@@ -11,7 +11,15 @@ import com.saaadd.game.GameScreen;
 import com.saaadd.item.Weapon;
 
 /**
- * Created by stanl on 5/24/2016.
+ * Creates a weapon display that shows player weapon and ammo
+ *
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
  */
 public class WeaponDisplay {
     private Weapon weapon;
@@ -20,6 +28,10 @@ public class WeaponDisplay {
     private Sprite sprite;
     private SpriteBatch batch;
     private Texture ammoIcon;
+
+    /**
+     * constructs a weapon displays
+     */
     public WeaponDisplay(){
         weapon = GameScreen.player.getWeapon();
         renderer = new ShapeRenderer();
@@ -29,6 +41,10 @@ public class WeaponDisplay {
         batch = new SpriteBatch();
         ammoIcon = new Texture(Gdx.files.internal("ammo.png"));
     }
+
+    /**
+     * updates WeaponDisplay
+     */
     public void update(){
         weapon = GameScreen.player.getWeapon();
         sprite = new Sprite(weapon.getImage());
@@ -38,6 +54,10 @@ public class WeaponDisplay {
         sprite.setSize( borderRectangle.getHeight() - 10,
                 borderRectangle.getHeight() - 10);
     }
+
+    /**
+     * draws weapon display
+     */
     public void draw(){
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.BLACK);

@@ -8,7 +8,15 @@ import com.saaadd.game.GameScreen;
 import java.util.ArrayList;
 
 /**
- * Created by stanl on 5/13/2016.
+ * Creates a user interface including methods to display healthbar and intro text.
+ *
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
  */
 public class UserInterface {
 

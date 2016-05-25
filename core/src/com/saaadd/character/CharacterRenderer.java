@@ -30,7 +30,7 @@ public class CharacterRenderer {
             if (characterList.get(i).shouldRemove()) {
                 Character c = characterList.remove(i);
                 if(c instanceof  Enemy){
-                    GameScreen.player.addMoney(1000);
+                    GameScreen.player.addMoney(10);
                 }
             } else {
                 characterList.get(i).update();

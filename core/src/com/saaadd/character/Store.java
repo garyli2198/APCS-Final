@@ -15,7 +15,13 @@ import com.saaadd.item.Weapon;
 import java.util.ArrayList;
 
 /**
- * Created by stanl on 5/22/2016.
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
  */
 public class Store {
     private ArrayList<Weapon> weapons;
@@ -28,6 +34,13 @@ public class Store {
     private int ammoType;
     private Sound bought = Gdx.audio.newSound(Gdx.files.internal("bought.mp3"));
     private Sound denied = Gdx.audio.newSound(Gdx.files.internal("denied.mp3"));
+
+    /**
+     * constructor
+     * @param weapons weapons to sell
+     * @param ammoIcon ammo icon display
+     * @param ammoType ammo type
+     */
     public Store(ArrayList<Weapon> weapons, Texture ammoIcon, int ammoType){
         this.weapons = weapons;
         window = new Rectangle(Gdx.graphics.getWidth()/1.7f, Gdx.graphics.getHeight()/1.5f, Gdx.graphics.getWidth()/4f,
@@ -39,9 +52,18 @@ public class Store {
         select = 1;
         this.ammoType = ammoType;
     }
+
+    /**
+     * adds weapon to store's weapon array
+     * @param weapon weapon to put in
+     */
     public void addWeapon(Weapon weapon){
         weapons.add(weapon);
     }
+
+    /**
+     * updates store
+     */
     public void update(){
         if(select == 0){
             if(ammoType == 0 && GameScreen.player.getInventory().contains(Weapon.weapons.get("healthgun")) && GameScreen.player.getMoney()>20)
@@ -114,6 +136,9 @@ public class Store {
 
     }
 
+    /**
+     * draws store ui
+     */
     public void draw(){
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.BLACK);

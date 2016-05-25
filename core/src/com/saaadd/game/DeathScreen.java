@@ -10,7 +10,13 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Created by Gary on 5/18/2016.
+ * @author Gary Li
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Stanley Huang, Wesley Pang
  */
 public class DeathScreen implements Screen{
     private Sound deathMusic;
@@ -18,6 +24,12 @@ public class DeathScreen implements Screen{
     private BitmapFont font;
     private SpriteBatch batch;
     private GameScreen screen;
+
+    /**
+     * constructor for new DeathScreen
+     * @param game game to restart into
+     * @param screen previous gamescreen
+     */
     public DeathScreen(SAAADD game, GameScreen screen){
         this.game = game;
         this.screen = screen;
@@ -32,6 +44,10 @@ public class DeathScreen implements Screen{
 
     }
 
+    /**
+     * Renders death screen
+     * @param delta time
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);

@@ -8,7 +8,13 @@ import com.saaadd.character.Character;
 import com.saaadd.game.GameScreen;
 
 /**
- * Created by stanl on 5/13/2016.
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
  */
 public class HealthBar {
     private ShapeRenderer renderer;
@@ -17,6 +23,10 @@ public class HealthBar {
     private Rectangle borderRectangle;
     private int currentHealth;
     private Rectangle currentHealthRectangle;
+
+    /**
+     * constructs a health bar
+     */
     public HealthBar(){
         renderer = new ShapeRenderer();
         maxHealth = Character.defaultHealth;
@@ -27,10 +37,17 @@ public class HealthBar {
                 borderRectangle.getWidth() - 10, borderRectangle.getHeight() - 10);
         maxHealthWidth = currentHealthRectangle.getWidth();
     }
+
+    /**
+     * updates health bar
+     */
     public void update(){
         currentHealthRectangle.setWidth(GameScreen.player.getHealth()/100f * maxHealthWidth);
     }
 
+    /**
+     * draws health bar
+     */
     public void draw(){
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.BLACK);

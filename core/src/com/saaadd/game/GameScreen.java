@@ -25,7 +25,15 @@ import com.saaadd.ui.UserInterface;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-
+/**
+ * @author Stanley Huang
+ * @version 5/24/16
+ *
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ *
+ * @author Sources - Gary Li, Wesley Pang
+ */
 public class GameScreen extends ApplicationAdapter implements Screen {
     public static float stateTime;
     public static Player player;
@@ -45,6 +53,10 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public static UserInterface userInterface;
     private Merchant nurse, heavyDealer, autoGunsDealer;
 
+    /**
+     * Constructs a new game screen
+     * @param game game
+     */
     public GameScreen(final SAAADD game) {
         //weapon loading
         try {
@@ -119,6 +131,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
+    /**
+     * @return the current wave
+     */
     public Wave getCurrentWave(){
         return currentWave;
     }
@@ -127,9 +142,12 @@ public class GameScreen extends ApplicationAdapter implements Screen {
     public void show() {
     }
 
+    /**
+     * renders the gamescreen
+     * @param delta delta time
+     */
     @Override
     public void render(float delta) {
-        System.out.println(player.getX() + " " + player.getY());
         //update statetime
         stateTime += Gdx.graphics.getDeltaTime();
         //update color background
@@ -214,6 +232,9 @@ public class GameScreen extends ApplicationAdapter implements Screen {
 
     }
 
+    /**
+     * disposes SpriteBatch and map
+     */
     @Override
     public void dispose() {
         batch.dispose();
