@@ -15,8 +15,15 @@ import java.util.ArrayList;
 
 import static com.saaadd.game.GameScreen.player;
 
-/**
- * Created by stanl on 5/13/2016.
+
+ /**
+ * A Merchant is a character that paces back and forth and sells weapons and ammo to the player, when the player
+  * is close enough
+ * @author Stanley Huang
+ * @version April 24, 2016
+ * @author Period - 6
+ * @author Assignment - APCS Final
+ * @author Sources - Gary Li, Wesley Pang
  */
 public class Merchant extends Character {
     public static final Texture nurseLegs = new Texture(Gdx.files.internal("nurseLegs.png"));
@@ -30,6 +37,18 @@ public class Merchant extends Character {
     private boolean[] overlapX;
     private int ammoType;
     private Texture ammoIcon;
+
+     /**
+      * constructs a Merchant with Textures, position and angle, and an ArrayList of weapons, as well as the type of
+      * ammo that are going to be sold by the Merchant
+      * @param legSheet  = leg sheet with walking animations
+      * @param bodySheet = body sheet with body types: dual, 1h, 2h
+      * @param x         = x coordinate of world
+      * @param y         = y coordinate of world
+      * @param angle     = rotation angle
+      * @param storeList = ArrayList of weapons to be sold
+      * @param ammoType  = ammo type to be sold
+      */
     public Merchant(Texture legSheet, Texture bodySheet, float x, float y, float angle, ArrayList<Weapon> storeList,
                     int ammoType) {
         super(legSheet, bodySheet, x, y, angle);
@@ -51,15 +70,30 @@ public class Merchant extends Character {
         store = new Store(storeList, ammoIcon, ammoType);
 
     }
-    public Store getStore(){
-        return store;
-    }
 
+     /**
+      * gets Store of Merchant
+      * @return store
+      */
+     public Store getStore() {
+         return store;
+     }
+
+     /**
+      * is never removed
+      * @return false
+      */
     @Override
     public boolean shouldRemove() {
         return false;
     }
 
+     /**
+      * updates Merchant:
+      * tracks player distance
+      * checks object collision
+      * changes direction every few seconds to simulate pacing
+      */
     @Override
     public void update() {
         time += Gdx.graphics.getDeltaTime();
@@ -121,6 +155,11 @@ public class Merchant extends Character {
         }
 
     }
+
+     /**
+      * draws Merchant character, draws its store when player is close enough.
+       * @param batch = batch used for drawing
+      */
     public void draw(SpriteBatch batch){
         super.draw(batch);
         if(closeEnough) {
@@ -128,6 +167,10 @@ public class Merchant extends Character {
         }
     }
 
+     /**
+      * bleeds when hit
+      * @param bullet = bullet that hit this character
+      */
     @Override
     public void onHit(Bullet bullet) {
         bleed();

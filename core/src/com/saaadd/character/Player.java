@@ -1,6 +1,5 @@
 package com.saaadd.character;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -55,7 +54,7 @@ public class Player extends Character implements InputProcessor {
         direction = new boolean[4];
         pMoving = 0;
         overlapX = new boolean[GameScreen.mapObjects.getCount()];
-        money = 0;
+        money = 1000;
         inventory = new ArrayList<Weapon>();
         inventory.add(weapon);
         iter = inventory.listIterator();
@@ -380,7 +379,7 @@ public class Player extends Character implements InputProcessor {
                 setWeapon(inventory.get(weaponIndex));
             }
         }
-        else if(amount == 0){
+        else if(amount == -1){
             if(weaponIndex == 0){
                 weaponIndex = inventory.size()- 1;
                 setWeapon(inventory.get(weaponIndex));
